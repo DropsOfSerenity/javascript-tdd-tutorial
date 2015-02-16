@@ -8,14 +8,11 @@ var assert = require("chai").assert,
 
 describe("server", function() {
   before(function() {
-    console.log("starting server");
     server.start();
   });
 
   after(function() {
-    server.stop(function() {
-      console.log("stopping server");
-    });
+    server.stop();
   });
 
   it("should return 200", function(done) {
