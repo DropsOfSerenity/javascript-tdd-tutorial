@@ -22,8 +22,16 @@
 
     mocha.addFile("./src/server/_server_test.js");
     mocha.run(function(failures) {
-      if (failures) fail("Tests have failed");
+      if (failures)
+        fail("Tests have failed");
+      else
+        complete();
     });
+  }, {async: true});
+
+  desc("Integrate");
+  task("integrate", ["default"], function() {
+    console.log("do the integration");
   });
 
   function nodeLintOptions() {
