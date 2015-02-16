@@ -14,6 +14,7 @@ User Stories:
 - marketing copy
 
 Engineering Tasks:
-- server-side testing
-- client-side testing
-- continuous integration
+- Create a very simple HTTP server
+
+To Do on current task:
+
