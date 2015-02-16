@@ -1,4 +1,4 @@
-/* global desc, task, jake, file, complete */
+/* global desc, task, jake, fail, complete */
 (function() {
   "use strict";
 
@@ -11,7 +11,8 @@
     files.include("**/*.js");
     files.exclude("node_modules");
 
-    lint.validateFileList(files.toArray(), nodeLintOptions(), {});
+    var passed = lint.validateFileList(files.toArray(), nodeLintOptions(), {});
+    if (!passed) fail("Lint failed");
   });
 
   function nodeLintOptions() {
