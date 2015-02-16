@@ -1,12 +1,11 @@
-task("default", [], function() {
+desc("Build and test");
+task("default", ["lint"], function() {
   console.log("default");
 });
 
-desc("Example!");
-task("example", ["dependency"], function() {
-  console.log("example task");
-});
-
-task("dependency", function() {
-  console.log("dependency");
+desc("Lint the code");
+task("lint", [], function() {
+  console.log("Lint code goes here");
+  var lint = require("./build/lint/lint.js");
+  lint.validateFile("Jakefile.js", {}, {});
 });
