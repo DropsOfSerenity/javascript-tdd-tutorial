@@ -2,7 +2,7 @@
 (function() {
   "use strict";
 
-  task("default", ["lint"]);
+  task("default", ["lint", "test"]);
 
   desc("Lint the code");
   task("lint", [], function() {
@@ -13,6 +13,17 @@
 
     var passed = lint.validateFileList(files.toArray(), nodeLintOptions(), {});
     if (!passed) fail("Lint failed");
+  });
+
+  desc("Test the code");
+  task("test", [], function() {
+    var Mocha = require("mocha");
+    var mocha = new Mocha({reporter: "spec", ui: "bdd"});
+
+    mocha.addFile("./src/server/_server_test.js");
+    mocha.run(function(failures) {
+      if (failures) fail("Tests have failed");
+    });
   });
 
   function nodeLintOptions() {
