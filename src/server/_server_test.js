@@ -15,7 +15,7 @@ describe("server", function() {
     server.stop();
   });
 
-  it("should return 200", function(done) {
+  it("should return 200 to get request", function(done) {
     http.get("http://localhost:8080/", function(res) {
       expect(res.statusCode).to.eq(200);
       done();
