@@ -21,4 +21,16 @@ describe("server", function() {
       done();
     });
   });
+
+  it("should return Hello World in response", function(done) {
+    http.get("http://localhost:8080/", function(res) {
+      res.setEncoding("utf8");
+      res.on("data", function(chunk) {
+        expect(chunk).contains("Hello World");
+      });
+      res.on("end", function() {
+        done();
+      });
+    });
+  });
 });

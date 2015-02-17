@@ -6,7 +6,7 @@ var server;
 exports.start = function() {
   server = http.createServer(function(req, res) {
     res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("Hello\n");
+    res.end("Hello World");
   });
   server.listen(8080); // TODO: remove duplication of port number
 };
