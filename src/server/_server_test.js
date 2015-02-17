@@ -33,4 +33,18 @@ describe("server", function() {
       });
     });
   });
+
+  it("should run callback when stop completes", function(done) {
+    server.stop(function() {
+      done();
+    });
+  });
+
+  it("should throw exception when server is called without port number", function(done) {
+    server.stop();
+    expect(function() {
+      server.start();
+    }).to.throw(Error);
+    done();
+  });
 });
