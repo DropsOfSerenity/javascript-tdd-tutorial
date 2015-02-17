@@ -8,7 +8,7 @@ var assert = require("chai").assert,
 
 describe("server", function() {
   before(function() {
-    server.start();
+    server.start(8080);
   });
 
   after(function() {
