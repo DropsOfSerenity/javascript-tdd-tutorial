@@ -1,4 +1,4 @@
-/* global before, done, after, describe, it, require */
+/* global beforeEach, done, afterEach, describe, it, require */
 "use strict";
 
 var assert = require("chai").assert,
@@ -7,40 +7,38 @@ var assert = require("chai").assert,
     fs = require("fs"),
     http = require("http");
 
+var TEST_FILE = "generated/test/test.html";
+
 describe("server", function() {
-  before(function() {
-    server.start(8080);
+  beforeEach(function() {
+    server.start(TEST_FILE, 8080);
   });
 
-  after(function() {
+  afterEach(function() {
+    if (fs.existsSync(TEST_FILE)) {
+      fs.unlinkSync(TEST_FILE);
+    }
     server.stop();
   });
 
-  it("should return 200 to get request", function(done) {
-    http.get("http://localhost:8080/", function(res) {
-      expect(res.statusCode).to.eq(200);
-      done();
-    });
+
+  it("requires a file to serve", function(done) {
+    server.stop();
+    expect(function() {
+      server.start(null, 8080);
+    }).to.throw(Error);
+    done();
   });
 
   // integration test
   it("should serve a file", function(done) {
-    var testDir = "generated/test";
-    var testFile = testDir + "/test.html";
-    try {
-      fs.writeFileSync(testFile, "Hello World");
-    } finally {
-      fs.unlinkSync(testFile);
-      expect(fs.existsSync(testFile)).to.eq(false);
-    }
-    done();
-  });
+    var testData = "This is text from a file";
+    fs.writeFileSync(TEST_FILE, testData);
 
-  it("should return Hello World in response", function(done) {
     http.get("http://localhost:8080/", function(res) {
       res.setEncoding("utf8");
       res.on("data", function(chunk) {
-        expect(chunk).contains("Hello World");
+        expect(chunk).to.eq(testData);
       });
       res.on("end", function() {
         done();

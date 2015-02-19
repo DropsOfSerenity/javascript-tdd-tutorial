@@ -1,14 +1,21 @@
 "use strict";
 
-var http = require("http");
-var server;
+var http = require("http"),
+    fs = require("fs"),
+    server;
 
-exports.start = function(portNumber) {
+exports.start = function(htmlFileToServe, portNumber) {
   if (!portNumber) throw new Error("start requires port number");
-  server = http.createServer(function(req, res) {
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("Hello World");
+  if (!htmlFileToServe) throw new Error("requires a file to server");
+
+  server = http.createServer();
+  server.on("request", function(req, res) {
+    fs.readFile(htmlFileToServe, function(err, data) {
+      if (err) throw err;
+      res.end(data);
+    });
   });
+
   server.listen(portNumber);
 };
 
