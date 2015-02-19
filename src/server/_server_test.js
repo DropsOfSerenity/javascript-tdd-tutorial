@@ -27,7 +27,12 @@ describe("server", function() {
   it("should serve a file", function(done) {
     var testDir = "generated/test";
     var testFile = testDir + "/test.html";
-    fs.writeFileSync(testFile, "Hello World");
+    try {
+      fs.writeFileSync(testFile, "Hello World");
+    } finally {
+      fs.unlinkSync(testFile);
+      expect(fs.existsSync(testFile)).to.eq(false);
+    }
     done();
   });
 
