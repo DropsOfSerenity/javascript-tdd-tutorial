@@ -1,6 +1,14 @@
-/* global desc, task, jake, fail, complete */
+/* global directory, desc, task, jake, fail, complete */
 (function() {
   "use strict";
+
+  var TEMP_TESTFILE_DIR = "generated/test";
+  directory(TEMP_TESTFILE_DIR);
+
+  desc("Delete all generated files");
+  task("clean", [], function() {
+    jake.rmRf("generated");
+  });
 
   desc("Lint and Test the code");
   task("default", ["lint", "test"]);
@@ -17,7 +25,7 @@
   });
 
   desc("Test the code");
-  task("test", ["node"], function() {
+  task("test", ["node", TEMP_TESTFILE_DIR], function() {
     var Mocha = require("mocha");
     var mocha = new Mocha({reporter: "spec", ui: "bdd"});
 

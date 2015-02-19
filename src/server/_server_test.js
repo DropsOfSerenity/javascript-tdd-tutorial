@@ -4,6 +4,7 @@
 var assert = require("chai").assert,
     expect = require("chai").expect,
     server = require("./server"),
+    fs = require("fs"),
     http = require("http");
 
 describe("server", function() {
@@ -20,6 +21,14 @@ describe("server", function() {
       expect(res.statusCode).to.eq(200);
       done();
     });
+  });
+
+  // integration test
+  it("should serve a file", function(done) {
+    var testDir = "generated/test";
+    var testFile = testDir + "/test.html";
+    fs.writeFileSync(testFile, "Hello World");
+    done();
   });
 
   it("should return Hello World in response", function(done) {

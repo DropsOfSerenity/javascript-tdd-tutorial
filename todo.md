@@ -2,19 +2,21 @@
 
 Minimum Marketing Feature:
 - marketing home page
-- collaorative painting page (very basic)
+- collaborative painting page (very basic)
 - wiki-fy the pages
 - more complex painting
 - collab features
 
 User Stories:
-* "hello world" server
-- "hello world" client
-- support multiple browsers
+* Serve a one-file homepage
+- Serve 404 for everything else
 - marketing copy
+- Publish to the internet
 
 Engineering Tasks:
-- Create a very simple HTTP server
+* Serve a file
 
 To Do on current task:
+
+Future Ideas:
 
