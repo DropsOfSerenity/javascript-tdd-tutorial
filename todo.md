@@ -12,7 +12,7 @@ User Stories:
 - Publish to the internet
 
 Engineering Tasks:
-* Serve a file
+- Exploratory testings
 
 To Do on current task:
 
