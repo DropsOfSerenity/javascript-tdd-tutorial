@@ -38,28 +38,23 @@
   task("node", [], function() {
     var NODE_VERSION = "v0.12.0";
 
-    sh("node --version", function(stdout) {
-      if (stdout !== NODE_VERSION)
-        fail("Incorrect node version, expected: " + NODE_VERSION);
-      complete();
-    });
+    var expected = parseNodeVersion("expected", NODE_VERSION);
+    var actual = parseNodeVersion("actual", process.version);
+
+    if (actual < expected)
+      fail("Node version too low, expect >=" + NODE_VERSION);
+
+    complete();
   }, {async: true});
 
-  function sh(command, callback) {
-    console.log("> " + command);
+  function parseNodeVersion(description, versionString) {
+    var NODE_VERSION_MATCHER = /^v(\d+)\.(\d+)\.(\d+)$/;
+    var regexedVersion = versionString.match(NODE_VERSION_MATCHER);
 
-    var stdout = "";
-    var process = jake.createExec(command, {printStdout: true, printStderr: true});
-    process.on("stdout", function(chunk) {
-      stdout += chunk;
-    });
-    process.on("cmdEnd", function() {
-      stdout = stdout.replace(/^\s+|\s+$/g, '');
-      console.log(stdout);
-      console.log();
-      callback(stdout);
-    });
-    process.run();
+    var major = regexedVersion[1];
+    var minor = regexedVersion[2];
+    var bugfix = regexedVersion[3];
+    return [major, minor, bugfix];
   }
 
   function nodeLintOptions() {
