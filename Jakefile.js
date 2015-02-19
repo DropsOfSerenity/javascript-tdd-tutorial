@@ -2,10 +2,11 @@
 (function() {
   "use strict";
 
+  desc("Lint and Test the code");
   task("default", ["lint", "test"]);
 
   desc("Lint the code");
-  task("lint", [], function() {
+  task("lint", ["node"], function() {
     var lint = require("./build/lint/lint.js");
     var files = new jake.FileList();
     files.include("**/*.js");
@@ -16,7 +17,7 @@
   });
 
   desc("Test the code");
-  task("test", [], function() {
+  task("test", ["node"], function() {
     var Mocha = require("mocha");
     var mocha = new Mocha({reporter: "spec", ui: "bdd"});
 
@@ -33,6 +34,25 @@
   task("integrate", ["default"], function() {
     console.log("do the integration");
   });
+
+  task("node", [], function() {
+    var desiredNodeVersion = "v0.12.0";
+    var command = "node --version";
+    console.log("> " + command);
+
+    var stdout = "";
+    var process = jake.createExec(command, {printStdout: true, printStderr: true});
+    process.on("stdout", function(chunk) {
+      stdout += chunk;
+    });
+    process.on("cmdEnd", function() {
+      stdout = stdout.replace(/^\s+|\s+$/g, '');
+      if (stdout !== desiredNodeVersion)
+        fail("Incorrect node version, expected: " + desiredNodeVersion);
+      complete();
+    });
+    process.run();
+  }, {async: true});
 
   function nodeLintOptions() {
     return {
