@@ -36,8 +36,16 @@
   });
 
   task("node", [], function() {
-    var desiredNodeVersion = "v0.12.0";
-    var command = "node --version";
+    var NODE_VERSION = "v0.12.0";
+
+    sh("node --version", function(stdout) {
+      if (stdout !== NODE_VERSION)
+        fail("Incorrect node version, expected: " + NODE_VERSION);
+      complete();
+    });
+  }, {async: true});
+
+  function sh(command, callback) {
     console.log("> " + command);
 
     var stdout = "";
@@ -47,12 +55,12 @@
     });
     process.on("cmdEnd", function() {
       stdout = stdout.replace(/^\s+|\s+$/g, '');
-      if (stdout !== desiredNodeVersion)
-        fail("Incorrect node version, expected: " + desiredNodeVersion);
-      complete();
+      console.log(stdout);
+      console.log();
+      callback(stdout);
     });
     process.run();
-  }, {async: true});
+  }
 
   function nodeLintOptions() {
     return {
