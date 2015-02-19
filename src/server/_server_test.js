@@ -35,14 +35,27 @@ describe("server", function() {
     var testData = "This is text from a file";
     fs.writeFileSync(TEST_FILE, testData);
 
-    http.get("http://localhost:8080/", function(res) {
-      res.setEncoding("utf8");
-      res.on("data", function(chunk) {
-        expect(chunk).to.eq(testData);
-      });
-      res.on("end", function() {
-        done();
-      });
+    httpGet("http://localhost:8080/", function(res, resData) {
+      expect(res.statusCode).to.eq(200);
+      expect(resData).to.eq(testData);
+      done();
+    });
+  });
+
+  it("should return 404 for everything but /", function(done) {
+    httpGet("http://localhost:8080/anotherurl/", function(res, resData) {
+      expect(res.statusCode).to.eq(404);
+      done();
+    });
+  });
+  
+  it("returns homepage when asked for index", function(done) {
+    var testData = "This is text from a file";
+    fs.writeFileSync(TEST_FILE, testData);
+    httpGet("http://localhost:8080/index.html", function(res, resData) {
+      expect(res.statusCode).to.eq(200);
+      expect(resData).to.eq(testData);
+      done();
     });
   });
 
@@ -59,4 +72,18 @@ describe("server", function() {
     }).to.throw(Error);
     done();
   });
+
+  function httpGet(url, callback) {
+    http.get(url, function(res) {
+      res.setEncoding("utf8");
+      var data = "";
+      res.on("data", function(chunk) {
+        data += chunk;
+      });
+      res.on("end", function() {
+        return callback(res, data);
+      });
+    });
+  }
+
 });

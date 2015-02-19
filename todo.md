@@ -8,9 +8,7 @@ Minimum Marketing Feature:
 - collab features
 
 User Stories:
-* Serve a one-file homepage
-- Serve 404 for everything else
-- marketing copy
+* marketing copy
 - Publish to the internet
 
 Engineering Tasks:
