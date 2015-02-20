@@ -29,8 +29,13 @@
   task("test", ["node", TEMP_TESTFILE_DIR], function() {
     var Mocha = require("mocha");
     var mocha = new Mocha({reporter: "spec", ui: "bdd"});
+    var files = new jake.FileList();
+    files.include("**/*_test.js");
+    files.exclude("node_modules");
 
-    mocha.addFile("./src/server/_server_test.js");
+    files.toArray().forEach(function(file) {
+      mocha.addFile(file);
+    });
     mocha.run(function(failures) {
       if (failures)
         fail("Tests have failed");

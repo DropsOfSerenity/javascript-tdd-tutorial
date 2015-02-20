@@ -8,8 +8,8 @@ Minimum Marketing Feature:
 - collab features
 
 User Stories:
-* marketing copy
-- Publish to the internet
+* Publish to the internet
+- marketing copy
 
 Engineering Tasks:
 - Exploratory testings
